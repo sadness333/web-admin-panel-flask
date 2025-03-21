@@ -1,36 +1,219 @@
 {% extends "base.html" %}
 
+{% block page_title %}Чат с клиентами{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
-    <h4 class="mb-4"><i class="fas fa-comments me-2"></i>Чат с клиентами</h4>
-    
     <div class="card shadow">
-        <div class="card-body chat-container">
-            <!-- История сообщений -->
-            <div class="chat-messages" id="chatMessages">
-                {% for msg in messages %}
-                <div class="message {% if msg.sender == 'Ветеринар' %}outgoing{% else %}incoming{% endif %}">
-                    <div class="message-header">
-                        <span class="sender">{{ msg.sender }}</span>
-                        <small class="text-muted ms-2">{{ msg.time }}</small>
+        <div class="card-body p-0">
+            <div class="row g-0">
+                <!-- Список контактов -->
+                <div class="col-md-4 col-lg-3 chat-sidebar">
+                    <div class="p-3 border-bottom">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Поиск контактов..." id="contactSearch">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="message-body">
-                        {{ msg.text }}
+                    <div class="contacts-list">
+                        <div class="chat-contact active" data-contact="1">
+                            <div class="d-flex align-items-center">
+                                <div class="position-relative">
+                                    <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50" alt="Анна Сидорова">
+                                    <span class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-white" style="width: 12px; height: 12px;"></span>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="mb-0">Анна Сидорова</h6>
+                                    <p class="text-muted small mb-0">Владелец: Мурка</p>
+                                    <small class="text-muted">Онлайн</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-contact" data-contact="2">
+                            <div class="d-flex align-items-center">
+                                <div class="position-relative">
+                                    <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50" alt="Иван Петров">
+                                    <span class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-white" style="width: 12px; height: 12px;"></span>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="mb-0">Иван Петров</h6>
+                                    <p class="text-muted small mb-0">Владелец: Барсик</p>
+                                    <small class="text-muted">Онлайн</small>
+                                </div>
+                                <div class="ms-auto me-2">
+                                    <span class="badge rounded-pill bg-danger">2</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-contact" data-contact="3">
+                            <div class="d-flex align-items-center">
+                                <div class="position-relative">
+                                    <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50" alt="Мария Иванова">
+                                    <span class="position-absolute bottom-0 end-0 bg-secondary rounded-circle border border-white" style="width: 12px; height: 12px;"></span>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="mb-0">Мария Иванова</h6>
+                                    <p class="text-muted small mb-0">Владелец: Шарик</p>
+                                    <small class="text-muted">Была 2 часа назад</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-
-            <!-- Поле ввода -->
-            <div class="chat-input mt-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Напишите сообщение..." id="messageInput">
-                    <button class="btn btn-primary" type="button" id="sendButton">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                
+                <!-- Основной чат -->
+                <div class="col-md-8 col-lg-9 chat-main">
+                    <!-- Заголовок чата -->
+                    <div class="chat-header border-bottom">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40" class="rounded-circle me-2" width="40" height="40" alt="Анна Сидорова">
+                                <div>
+                                    <h6 class="mb-0">Анна Сидорова</h6>
+                                    <small class="text-muted">Владелец: Мурка (Кошка)</small>
+                                </div>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Сообщения -->
+                    <div class="chat-messages" id="chatMessages">
+                        {% for msg in messages %}
+                        <div class="message {% if msg.sender == 'Ветеринар' %}outgoing{% else %}incoming{% endif %}">
+                            <div class="message-header">
+                                <span class="sender">{{ msg.sender }}</span>
+                                <small class="text-muted ms-2">{{ msg.time }}</small>
+                            </div>
+                            <div class="message-body">
+                                {{ msg.text }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Поле ввода -->
+                    <div class="chat-input border-top">
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-link text-muted">
+                                <i class="fas fa-paperclip fs-5"></i>
+                            </button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Напишите сообщение..." id="messageInput">
+                                <button class="btn btn-primary" type="button" id="sendButton">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-link text-muted ms-2">
+                                <i class="fas fa-microphone fs-5"></i>
+                            </button>
+                        </div>
+                        <div class="quick-replies mt-2 d-flex flex-wrap">
+                            <button class="btn btn-sm btn-outline-primary me-2 mb-2 quick-reply">Добрый день!</button>
+                            <button class="btn btn-sm btn-outline-primary me-2 mb-2 quick-reply">Как самочувствие питомца?</button>
+                            <button class="btn btn-sm btn-outline-primary me-2 mb-2 quick-reply">Пожалуйста, запишитесь на прием</button>
+                            <button class="btn btn-sm btn-outline-primary me-2 mb-2 quick-reply">Не забудьте про вакцинацию</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Прокрутка чата вниз при загрузке
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Отправка сообщения
+        const sendButton = document.getElementById('sendButton');
+        const messageInput = document.getElementById('messageInput');
+        
+        function sendMessage() {
+            if (messageInput.value.trim() === '') return;
+            
+            // Создание нового сообщения
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message outgoing';
+            newMessage.innerHTML = `
+                <div class="message-header">
+                    <span class="sender">Ветеринар</span>
+                    <small class="text-muted ms-2">Только что</small>
+                </div>
+                <div class="message-body">${messageInput.value}</div>
+            `;
+            
+            // Добавление сообщения в чат
+            chatMessages.appendChild(newMessage);
+            
+            // Очистка поля ввода
+            messageInput.value = '';
+            
+            // Прокрутка чата вниз
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Обработчики событий
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Быстрые ответы
+        document.querySelectorAll('.quick-reply').forEach(button => {
+            button.addEventListener('click', function() {
+                messageInput.value = this.textContent;
+                sendMessage();
+            });
+        });
+        
+        // Переключение между контактами
+        document.querySelectorAll('.chat-contact').forEach(contact => {
+            contact.addEventListener('click', function() {
+                document.querySelectorAll('.chat-contact').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // В реальном приложении здесь будет загрузка истории сообщений для выбранного контакта
+                console.log('Выбран контакт:', this.dataset.contact);
+            });
+        });
+        
+        // Поиск контактов
+        const contactSearch = document.getElementById('contactSearch');
+        contactSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.chat-contact').forEach(contact => {
+                const name = contact.querySelector('h6').textContent.toLowerCase();
+                const pet = contact.querySelector('p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || pet.includes(searchTerm)) {
+                    contact.style.display = '';
+                } else {
+                    contact.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

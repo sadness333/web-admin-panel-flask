@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block page_title %}Управление приемами{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Управление приемами</h1>
+        <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                <i class="fas fa-plus me-2"></i>Новый прием
+            </button>
+        </div>
+    </div>
+
+    <!-- Фильтры -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Фильтры</h6>
+        </div>
+        <div class="card-body">
+            <form id="filterForm" class="row g-3">
+                <div class="col-md-3">
+                    <label for="dateRange" class="form-label">Период</label>
+                    <select class="form-select" id="dateRange">
+                        <option value="today">Сегодня</option>
+                        <option value="tomorrow">Завтра</option>
+                        <option value="week">Эта неделя</option>
+                        <option value="month">Этот месяц</option>
+                        <option value="custom">Указать даты</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="veterinarian" class="form-label">Ветеринар</label>
+                    <select class="form-select" id="veterinarian">
+                        <option value="">Все ветеринары</option>
+                        <option value="1">Иванов И.И.</option>
+                        <option value="2">Петрова А.С.</option>
+                        <option value="3">Сидоров В.П.</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Статус</label>
+                    <select class="form-select" id="status">
+                        <option value="">Все статусы</option>
+                        <option value="scheduled">Запланирован</option>
+                        <option value="confirmed">Подтвержден</option>
+                        <option value="completed">Завершен</option>
+                        <option value="cancelled">Отменен</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Поиск</label>
+                    <input type="text" class="form-control" id="search" placeholder="Имя питомца или владельца">
+                </div>
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary">Применить фильтры</button>
+                    <button type="reset" class="btn btn-outline-secondary">Сбросить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Календарь -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Календарь приемов - {{ current_date }}</h6>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline-primary">День</button>
+                <button class="btn btn-sm btn-outline-primary active">Неделя</button>
+                <button class="btn btn-sm btn-outline-primary">Месяц</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered appointment-calendar">
+                    <thead>
+                        <tr>
+                            <th width="8%">Время</th>
+                            <th width="15%">Понедельник</th>
+                            <th width="15%">Вторник</th>
+                            <th width="15%">Среда</th>
+                            <th width="15%">Четверг</th>
+                            <th width="15%">Пятница</th>
+                            <th width="8%">Суббота</th>
+                            <th width="8%">Воскресенье</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hour in range(9, 19) %}
+                        <tr>
+                            <td class="time-slot">{{ hour }}:00</td>
+                            {% for day in range(7) %}
+                            <td class="appointment-slot" data-day="{{ day }}" data-hour="{{ hour }}">
+                                {% if day == 0 and hour == 9 %}
+                                <div class="appointment-item bg-primary text-white">
+                                    <div class="appointment-time">9:00 - 9:30</div>
+                                    <div class="appointment-pet">Барсик</div>
+                                    <div class="appointment-owner">Иван Петров</div>
+                                </div>
+                                {% endif %}
+                                {% if day == 0 and hour == 12 %}
+                                <div class="appointment-item bg-primary text-white">
+                                    <div class="appointment-time">12:00 - 12:30</div>
+                                    <div class="appointment-pet">Рекс</div>
+                                    <div class="appointment-owner">Алексей Смирнов</div>
+                                </div>
+                                {% endif %}
+                                {% if day == 2 and hour == 10 %}
+                                <div class="appointment-item bg-primary text-white">
+                                    <div class="appointment-time">10:30 - 11:00</div>
+                                    <div class="appointment-pet">Шарик</div>
+                                    <div class="appointment-owner">Мария Иванова</div>
+                                </div>
+                                {% endif %}
+                                {% if day == 3 and hour == 14 %}
+                                <div class="appointment-item bg-success text-white">
+                                    <div class="appointment-time">14:30 - 15:30</div>
+                                    <div class="appointment-pet">Мурка</div>
+                                    <div class="appointment-owner">Анна Сидорова</div>
+                                </div>
+                                {% endif %}
+                                {% if day == 4 and hour == 16 %}
+                                <div class="appointment-item bg-danger text-white">
+                                    <div class="appointment-time">16:00 - 16:30</div>
+                                    <div class="appointment-pet">Пушок</div>
+                                    <div class="appointment-owner">Елена Козлова</div>
+                                </div>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список приемов -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Список приемов</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="appointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Питомец</th>
+                            <th>Владелец</th>
+                            <th>Причина</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.time }}</td>
+                            <td>{{ appointment.pet }}</td>
+                            <td>{{ appointment.owner }}</td>
+                            <td>{{ appointment.reason }}</td>
+                            <td>
+                                {% if appointment.status == 'Ожидается' %}
+                                <span class="badge bg-primary">{{ appointment.status }}</span>
+                                {% elif appointment.status == 'Завершен' %}
+                                <span class="badge bg-success">{{ appointment.status }}</span>
+                                {% elif appointment.status == 'Отменен' %}
+                                <span class="badge bg-danger">{{ appointment.status }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ appointment.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно добавления приема -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appointmentModalLabel">Новый прием</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="appointmentForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentDate" class="form-label">Дата</label>
+                            <input type="date" class="form-control" id="appointmentDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentTime" class="form-label">Время</label>
+                            <input type="time" class="form-control" id="appointmentTime" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="petSelect" class="form-label">Питомец</label>
+                            <select class="form-select" id="petSelect" required>
+                                <option value="">Выберите питомца</option>
+                                <option value="1">Барсик (Иван Петров)</option>
+                                <option value="2">Мурка (Анна Сидорова)</option>
+                                <option value="3">Шарик (Мария Иванова)</option>
+                                <option value="4">Рекс (Алексей Смирнов)</option>
+                                <option value="5">Пушок (Елена Козлова)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="veterinarianSelect" class="form-label">Ветеринар</label>
+                            <select class="form-select" id="veterinarianSelect" required>
+                                <option value="">Выберите ветеринара</option>
+                                <option value="1">Иванов И.И.</option>
+                                <option value="2">Петрова А.С.</option>
+                                <option value="3">Сидоров В.П.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reasonSelect" class="form-label">Причина</label>
+                        <select class="form-select" id="reasonSelect" required>
+                            <option value="">Выберите причину</option>
+                            <option value="checkup">Плановый осмотр</option>
+                            <option value="vaccination">Вакцинация</option>
+                            <option value="illness">Заболевание</option>
+                            <option value="injury">Травма</option>
+                            <option value="surgery">Операция</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appointmentNotes" class="form-label">Примечания</label>
+                        <textarea class="form-control" id="appointmentNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="saveAppointment">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработчик формы фильтров
+        const filterForm = document.getElementById('filterForm');
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Здесь будет логика фильтрации
+            console.log('Фильтры применены');
+        });
+        
+        // Обработчик сохранения приема
+        const saveAppointmentBtn = document.getElementById('saveAppointment');
+        saveAppointmentBtn.addEventListener('click', function() {
+            // Здесь будет логика сохранения приема
+            console.log('Прием сохранен');
+            
+            // Закрыть модальное окно
+            const modal = bootstrap.Modal.getInstance(document.getElementById('appointmentModal'));
+            modal.hide();
+            
+            // Показать уведомление об успешном сохранении
+            alert('Прием успешно добавлен!');
+        });
+        
+        // Обработчик клика по ячейке календаря
+        const appointmentSlots = document.querySelectorAll('.appointment-slot');
+        appointmentSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                if (!this.querySelector('.appointment-item')) {
+                    // Если ячейка пустая, открыть модальное окно для добавления приема
+                    const day = this.dataset.day;
+                    const hour = this.dataset.hour;
+                    
+                    // Установить дату и время в форме
+                    const today = new Date();
+                    const appointmentDate = new Date(today);
+                    appointmentDate.setDate(today.getDate() + parseInt(day));
+                    
+                    document.getElementById('appointmentDate').valueAsDate = appointmentDate;
+                    document.getElementById('appointmentTime').value = `${hour}:00`;
+                    
+                    // Открыть модальное окно
+                    const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+                    modal.show();
+                } else {
+                    // Если в ячейке уже есть прием, показать детали
+                    console.log('Просмотр существующего приема');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

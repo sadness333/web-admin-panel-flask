@@ -1,23 +1,66 @@
 {% extends "base.html" %}
 
+{% block page_title %}Поиск пациентов{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
-    <h4 class="mb-4"><i class="fas fa-search me-2"></i>Поиск пациентов</h4>
-    
-    <!-- Фильтры -->
+    <!-- Фильтры поиска -->
     <div class="card shadow mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Фильтры поиска</h5>
+        </div>
         <div class="card-body">
-            <form id="searchForm">
+            <form id="searchForm" class="search-form">
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="Кличка животного" id="petName">
+                    <div class="col-md-4 col-sm-6">
+                        <label for="petName" class="form-label">Кличка животного</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-paw"></i></span>
+                            <input type="text" class="form-control" id="petName" placeholder="Введите кличку">
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="Имя хозяина" id="ownerName">
+                    <div class="col-md-4 col-sm-6">
+                        <label for="ownerName" class="form-label">Имя владельца</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="ownerName" placeholder="Введите имя">
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-filter me-2"></i>Применить фильтры
+                    <div class="col-md-4 col-sm-6">
+                        <label for="petType" class="form-label">Вид животного</label>
+                        <select class="form-select" id="petType">
+                            <option value="">Все виды</option>
+                            <option value="cat">Кошка</option>
+                            <option value="dog">Собака</option>
+                            <option value="bird">Птица</option>
+                            <option value="rodent">Грызун</option>
+                            <option value="exotic">Экзотическое</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label for="visitDateFrom" class="form-label">Дата визита (от)</label>
+                        <input type="date" class="form-control" id="visitDateFrom">
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label for="visitDateTo" class="form-label">Дата визита (до)</label>
+                        <input type="date" class="form-control" id="visitDateTo">
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label for="status" class="form-label">Статус</label>
+                        <select class="form-select" id="status">
+                            <option value="">Любой статус</option>
+                            <option value="healthy">Здоров</option>
+                            <option value="treatment">На лечении</option>
+                            <option value="observation">Под наблюдением</option>
+                            <option value="critical">Критическое состояние</option>
+                        </select>
+                    </div>
+                    <div class="col-12 mt-4 text-end">
+                        <button type="reset" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-undo me-1"></i>Сбросить
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>Найти
                         </button>
                     </div>
                 </div>
@@ -25,33 +68,175 @@
         </div>
     </div>
 
-    <!-- Результаты -->
+    <!-- Результаты поиска -->
     <div class="card shadow">
-        <div class="card-header bg-success text-white">
-            Найдено пациентов: {{ pets|length }}
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-search me-2"></i>Результаты поиска</h5>
+            <div>
+                <span class="badge bg-primary">Найдено: {{ pets|length }}</span>
+                <div class="btn-group ms-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary active" id="viewTable">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="viewGrid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="card-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Кличка</th>
-                        <th>Вид</th>
-                        <th>Хозяин</th>
-                        <th>Последний визит</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pet in pets %}
-                    <tr>
-                        <td>{{ pet.name }}</td>
-                        <td>{{ pet.type }}</td>
-                        <td>{{ pet.owner }}</td>
-                        <td>{{ pet.last_visit }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <!-- Табличный вид -->
+            <div id="tableView">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="searchResults">
+                        <thead>
+                            <tr>
+                                <th>Кличка</th>
+                                <th>Фото</th>
+                                <th>Владелец</th>
+                                <th>Вид</th>
+                                <th>Возраст</th>
+                                <th>Последний визит</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pet in pets %}
+                            <tr>
+                                <td>{{ pet.name }}</td>
+                                <td>
+                                    <img src="{{ pet.photo }}" alt="{{ pet.name }}" class="rounded-circle" width="40" height="40">
+                                </td>
+                                <td>{{ pet.owner|default('Иван Петров') }}</td>
+                                <td>{{ pet.type }}</td>
+                                <td>{{ pet.age|default('2 года') }}</td>
+                                <td>{{ pet.last_visit }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if pet.status|default('Здоров') == 'Здоров' else 'warning' }}">
+                                        {{ pet.status|default('Здоров') }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-file-medical"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Вид сеткой -->
+            <div id="gridView" class="row g-3" style="display: none;">
+                {% for pet in pets %}
+                <div class="col-md-4 col-xl-3">
+                    <div class="card pet-card h-100">
+                        <div class="position-relative">
+                            <img src="{{ pet.photo }}" class="card-img-top" alt="{{ pet.name }}">
+                            <span class="position-absolute top-0 end-0 m-2 badge bg-{{ 'success' if pet.status|default('Здоров') == 'Здоров' else 'warning' }}">
+                                {{ pet.status|default('Здоров') }}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pet.name }}</h5>
+                            <div class="d-flex justify-content-between mb-2">
+                                <p class="text-muted mb-0">{{ pet.type }}</p>
+                                <p class="text-muted mb-0">{{ pet.age|default('2 года') }}</p>
+                            </div>
+                            <p class="mb-1">Владелец: <strong>{{ pet.owner|default('Иван Петров') }}</strong></p>
+                            <p class="mb-2">Последний визит: <strong>{{ pet.last_visit }}</strong></p>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye me-1"></i>Просмотр
+                                </button>
+                                <button class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-file-medical me-1"></i>Медкарта
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Следующая</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Переключение между табличным и сеточным видом
+        const viewTable = document.getElementById('viewTable');
+        const viewGrid = document.getElementById('viewGrid');
+        const tableView = document.getElementById('tableView');
+        const gridView = document.getElementById('gridView');
+        
+        viewTable.addEventListener('click', function() {
+            tableView.style.display = 'block';
+            gridView.style.display = 'none';
+            viewTable.classList.add('active');
+            viewGrid.classList.remove('active');
+        });
+        
+        viewGrid.addEventListener('click', function() {
+            tableView.style.display = 'none';
+            gridView.style.display = 'flex';
+            viewTable.classList.remove('active');
+            viewGrid.classList.add('active');
+        });
+        
+        // Обработка поиска
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const petName = document.getElementById('petName').value.toLowerCase();
+            const ownerName = document.getElementById('ownerName').value.toLowerCase();
+            const petType = document.getElementById('petType').value.toLowerCase();
+            
+            // Фильтрация (заглушка)
+            const rows = document.querySelectorAll('#searchResults tbody tr');
+            rows.forEach(row => {
+                const rowPet = row.cells[0].textContent.toLowerCase();
+                const rowOwner = row.cells[2].textContent.toLowerCase();
+                const rowType = row.cells[3].textContent.toLowerCase();
+                
+                const matchPet = petName === '' || rowPet.includes(petName);
+                const matchOwner = ownerName === '' || rowOwner.includes(ownerName);
+                const matchType = petType === '' || rowType.includes(petType);
+                
+                row.style.display = (matchPet && matchOwner && matchType) ? '' : 'none';
+            });
+            
+            // Обновление счетчика результатов
+            const visibleRows = document.querySelectorAll('#searchResults tbody tr:not([style*="display: none"])');
+            document.querySelector('.badge.bg-primary').textContent = `Найдено: ${visibleRows.length}`;
+        });
+    });
+</script>
 {% endblock %}

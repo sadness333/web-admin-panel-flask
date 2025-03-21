@@ -1,61 +1,163 @@
 {% extends "base.html" %}
 
+{% block page_title %}Панель управления{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
-    <h4 class="mb-4">🩺 Сводка за сегодня</h4>
+    <!-- Статистика -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="stat-card stat-appointments">
+                <div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Приемов сегодня</div>
+                </div>
+                <i class="fas fa-calendar-check stat-icon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card stat-patients">
+                <div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Всего пациентов</div>
+                </div>
+                <i class="fas fa-paw stat-icon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card stat-messages">
+                <div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Новых сообщений</div>
+                </div>
+                <i class="fas fa-comments stat-icon"></i>
+            </div>
+        </div>
+    </div>
     
-    <!-- Приемы -->
+    <!-- Приемы и пациенты -->
     <div class="row">
-        <div class="col-md-6">
+        <!-- Ближайшие приемы -->
+        <div class="col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-calendar-day me-2"></i>Ближайшие приемы</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-plus me-1"></i>Новый прием
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Время</th>
+                                    <th>Питомец</th>
+                                    <th>Хозяин</th>
+                                    <th>Причина</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appt in appointments %}
+                                <tr>
+                                    <td>{{ appt.time }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="pet-icon me-2 rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="fas fa-cat text-secondary"></i>
+                                            </div>
+                                            {{ appt.pet }}
+                                        </div>
+                                    </td>
+                                    <td>{{ appt.owner }}</td>
+                                    <td>{{ appt.reason|default('Осмотр') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if appt.status == 'Завершен' else 'warning' }}">
+                                            {{ appt.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-medical"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/appointments" class="text-decoration-none">Показать все приемы</a>
+                </div>
+            </div>
+            
+            <!-- График приемов -->
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    Ближайшие приемы
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>График приемов</h5>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Время</th>
-                                <th>Питомец</th>
-                                <th>Хозяин</th>
-                                <th>Статус</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for appt in appointments %}
-                            <tr>
-                                <td>{{ appt.time }}</td>
-                                <td>{{ appt.pet }}</td>
-                                <td>{{ appt.owner }}</td>
-                                <td>
-                                    <span class="badge bg-{{ 'success' if appt.status == 'Завершен' else 'warning' }}">
-                                        {{ appt.status }}
-                                    </span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary active">День</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary">Неделя</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary">Месяц</button>
+                        </div>
+                        <div class="text-muted">{{ current_date|default('21 марта 2025') }}</div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height:200px;">
+                        <!-- Здесь будет график -->
+                        <div class="d-flex justify-content-center align-items-center h-100 bg-light rounded">
+                            <p class="text-muted">График загрузки по часам</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Недавние пациенты -->
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-info text-white">
-                    Недавние пациенты
+        
+        <!-- Недавние пациенты и активность -->
+        <div class="col-lg-5">
+            <!-- Недавние пациенты -->
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-paw me-2"></i>Недавние пациенты</h5>
+                    <a href="/patients" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-search me-1"></i>Все пациенты
+                    </a>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row g-3">
                         {% for pet in pets %}
-                        <div class="col-md-6 mb-3">
-                            <div class="card h-100">
-                                <img src="{{ pet.photo }}" class="card-img-top" alt="{{ pet.name }}">
+                        <div class="col-md-6">
+                            <div class="card pet-card h-100 border">
+                                <div class="position-relative">
+                                    <img src="{{ pet.photo }}" class="card-img-top" alt="{{ pet.name }}">
+                                    <span class="position-absolute top-0 end-0 m-2 badge bg-{{ 'success' if pet.status == 'Здоров' else 'warning' }}">
+                                        {{ pet.status|default('Здоров') }}
+                                    </span>
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">{{ pet.name }}</h5>
-                                    <p class="text-muted">{{ pet.type }}</p>
-                                    <small class="text-secondary">Последний визит: {{ pet.last_visit }}</small>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="text-muted mb-1">{{ pet.type }}</p>
+                                        <p class="text-muted mb-1">{{ pet.age|default('2 года') }}</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <small class="text-secondary">Визит: {{ pet.last_visit }}</small>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +165,55 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Последняя активность -->
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Последняя активность</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <div class="activity-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+                            <div>
+                                <div>Добавлена новая медкарта для <strong>Барсик</strong></div>
+                                <small class="text-muted">Сегодня, 14:30</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <div class="activity-icon bg-success text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <div>Завершен прием <strong>Мурка</strong></div>
+                                <small class="text-muted">Сегодня, 12:15</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <div class="activity-icon bg-info text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div>
+                                <div>Новое сообщение от <strong>Анна Сидорова</strong></div>
+                                <small class="text-muted">Сегодня, 10:20</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Здесь будет дополнительный JavaScript для графиков и интерактивности
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация компонентов
+        console.log('Dashboard initialized');
+    });
+</script>
 {% endblock %}
