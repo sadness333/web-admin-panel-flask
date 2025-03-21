@@ -1,34 +1,16 @@
-:root {
-    --sidebar-bg: #2A3F54;
-    --text-color: #ffffff;
+body {
+    background-color: #f8f9fa;
 }
 
-.sidebar {
-    background: var(--sidebar-bg);
-    color: var(--text-color);
-    min-width: 250px;
-    max-width: 250px;
-    min-height: 100vh;
-    transition: all 0.3s;
+.card {
+    border: none;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-.sidebar-header {
-    padding: 20px;
-    background: #1a252f;
+.navbar {
+    margin-bottom: 2rem;
 }
 
-.sidebar a {
-    color: var(--text-color);
-    padding: 10px 20px;
-    display: block;
-}
-
-.sidebar a:hover {
-    background: #35495e;
-    text-decoration: none;
-}
-
-.content {
-    width: calc(100% - 250px);
-    padding: 20px;
+.badge {
+    font-size: 0.9em;
 }
