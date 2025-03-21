@@ -2,27 +2,13 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": { 
-        "includeFiles": ["static/**", "templates/**"]
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
       "src": "/(.*)",
       "dest": "app.py"
     }
-  ],
-  "env": {
-    "FLASK_APP": "app.py",
-    "FLASK_ENV": "production"
-  }
+  ]
 }

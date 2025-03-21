@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO
 import datetime
 
-app = Flask(__name__, static_folder='static', static_url_path='/static')
+app = Flask(__name__)
 socketio = SocketIO(app)
 
 # Текущая дата
