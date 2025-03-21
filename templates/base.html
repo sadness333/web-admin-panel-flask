@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель врача</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Боковое меню -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>ВетКлиника 🐾</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="/search"><i class="fas fa-search"></i> Поиск животных</a></li>
+                <li><a href="/chat"><i class="fas fa-comments"></i> Чат</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Настройки</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Выход</a></li>
+            </ul>
+        </nav>
+
+        <!-- Основной контент -->
+        <div id="content" class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

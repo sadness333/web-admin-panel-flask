@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2>Поиск животных</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="search-form">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Кличка" id="pet-name">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Хозяин" id="owner">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Найти</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table" id="search-results">
+                <thead>
+                    <tr>
+                        <th>Кличка</th>
+                        <th>Вид</th>
+                        <th>Хозяин</th>
+                        <th>Последний визит</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Результаты поиска -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
