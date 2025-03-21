@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="mb-4"><i class="fas fa-comments me-2"></i>Чат с клиентами</h4>
+    
+    <div class="card shadow">
+        <div class="card-body chat-container">
+            <!-- История сообщений -->
+            <div class="chat-messages" id="chatMessages">
+                {% for msg in messages %}
+                <div class="message {% if msg.sender == 'Ветеринар' %}outgoing{% else %}incoming{% endif %}">
+                    <div class="message-header">
+                        <span class="sender">{{ msg.sender }}</span>
+                        <small class="text-muted ms-2">{{ msg.time }}</small>
+                    </div>
+                    <div class="message-body">
+                        {{ msg.text }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Поле ввода -->
+            <div class="chat-input mt-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Напишите сообщение..." id="messageInput">
+                    <button class="btn btn-primary" type="button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

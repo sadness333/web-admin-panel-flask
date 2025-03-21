@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="mb-4"><i class="fas fa-search me-2"></i>Поиск пациентов</h4>
+    
+    <!-- Фильтры -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form id="searchForm">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Кличка животного" id="petName">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Имя хозяина" id="ownerName">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter me-2"></i>Применить фильтры
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Результаты -->
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            Найдено пациентов: {{ pets|length }}
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Кличка</th>
+                        <th>Вид</th>
+                        <th>Хозяин</th>
+                        <th>Последний визит</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pet in pets %}
+                    <tr>
+                        <td>{{ pet.name }}</td>
+                        <td>{{ pet.type }}</td>
+                        <td>{{ pet.owner }}</td>
+                        <td>{{ pet.last_visit }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
