@@ -8,6 +8,11 @@
       }
     }
   ],
+  "functions": {
+    "app.py": {
+      "includeFiles": "static/**"
+    }
+  },
   "routes": [
     {
       "src": "/static/(.*)",
