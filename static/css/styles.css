@@ -138,6 +138,10 @@ body {
     margin: auto 1rem;
 }
 
+.user-panel {
+    transition: all 0.3s;
+}
+
 .user-profile {
     display: flex;
     align-items: center;
@@ -368,6 +372,12 @@ body {
 
 .chat-contact.active {
     background-color: rgba(78, 115, 223, 0.1);
+}
+
+.main-content {
+    flex: 1;
+    transition: margin-left 0.3s;
+    overflow-x: hidden;
 }
 
 .chat-main {
