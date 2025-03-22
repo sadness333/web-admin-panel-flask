@@ -8,8 +8,14 @@
     --dark-color: #5a5c69;
     --light-color: #f8f9fc;
     --sidebar-width: 250px;
+    --sidebar-collapsed-width: 60px;
     --topbar-height: 70px;
     --border-color: #e3e6f0;
+}
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
 }
 
 body {
@@ -21,7 +27,7 @@ body {
 /* Боковая панель */
 .sidebar {
     width: var(--sidebar-width);
-    background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+    background: #2c3e50;
     position: fixed;
     top: 0;
     left: 0;
@@ -29,6 +35,8 @@ body {
     z-index: 100;
     transition: all 0.3s;
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    flex-shrink: 0;
+    overflow-x: hidden;
 }
 
 .sidebar-brand {
@@ -39,6 +47,24 @@ body {
     padding: 1.5rem 1rem;
     color: white;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar.collapsed .nav-link span {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.1s;
+}
+
+.sidebar.collapsed .sidebar-header h3 span {
+    display: none;
+}
+
+.sidebar.collapsed .user-info {
+    display: none;
 }
 
 .sidebar-brand-text {

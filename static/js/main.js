@@ -1,3 +1,12 @@
+document.getElementById('sidebarToggle').addEventListener('click', function() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('collapsed');
+    
+    const icon = this.querySelector('i');
+    icon.classList.toggle('fa-bars');
+    icon.classList.toggle('fa-chevron-right');
+});
+
 // Обработка поиска
 document.getElementById('searchForm').addEventListener('submit', function(e) {
     e.preventDefault();

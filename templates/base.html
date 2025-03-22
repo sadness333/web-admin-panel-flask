@@ -13,10 +13,16 @@
     <div class="wrapper">
         <!-- Левое меню -->
         <nav class="sidebar">
-            <div class="sidebar-header">
-                <h3><i class="fas fa-stethoscope"></i> VetCare</h3>
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <h3 class="text-white mb-0">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>VetCare</span>
+                </h3>
+                <button id="sidebarToggle" class="btn btn-link text-white p-0">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-            <ul class="nav flex-column">
+            <ul class="nav flex-column mt-3">
                 <li class="nav-item">
                     <a class="nav-link {{ 'active' if request.path == '/' else '' }}" href="/">
                         <i class="fas fa-home"></i> <span>Главная</span>
@@ -53,9 +59,9 @@
                     </a>
                 </li>
             </ul>
-            <div class="mt-auto p-3 d-flex align-items-center">
+            <div class="user-panel mt-auto p-3 d-flex align-items-center">
                 <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Доктор">
-                <div>
+                <div class="user-info">
                     <div class="text-white">Доктор Иванов</div>
                     <small class="text-muted">Ветеринар</small>
                 </div>
