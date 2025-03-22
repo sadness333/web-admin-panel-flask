@@ -1,0 +1,512 @@
+{% extends "base.html" %}
+
+{% block page_title %}Настройки{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Настройки системы</h1>
+        <button class="btn btn-primary" id="saveSettings">
+            <i class="fas fa-save me-2"></i>Сохранить изменения
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <!-- Навигация по настройкам -->
+            <div class="card shadow mb-4">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush" id="settings-tabs" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="profile-tab" data-bs-toggle="list" href="#profile" role="tab">
+                            <i class="fas fa-user-md me-2"></i>Профиль
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="clinic-tab" data-bs-toggle="list" href="#clinic" role="tab">
+                            <i class="fas fa-clinic-medical me-2"></i>Клиника
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="services-tab" data-bs-toggle="list" href="#services" role="tab">
+                            <i class="fas fa-list-alt me-2"></i>Услуги
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="notifications-tab" data-bs-toggle="list" href="#notifications" role="tab">
+                            <i class="fas fa-bell me-2"></i>Уведомления
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="security-tab" data-bs-toggle="list" href="#security" role="tab">
+                            <i class="fas fa-lock me-2"></i>Безопасность
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="appearance-tab" data-bs-toggle="list" href="#appearance" role="tab">
+                            <i class="fas fa-paint-brush me-2"></i>Внешний вид
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="backup-tab" data-bs-toggle="list" href="#backup" role="tab">
+                            <i class="fas fa-database me-2"></i>Резервное копирование
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <!-- Содержимое настроек -->
+            <div class="tab-content">
+                <!-- Профиль -->
+                <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Личная информация</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-3 text-center">
+                                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail mb-3" alt="Фото профиля">
+                                    <button class="btn btn-sm btn-outline-primary">Изменить фото</button>
+                                </div>
+                                <div class="col-md-9">
+                                    <form>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="firstName" class="form-label">Имя</label>
+                                                <input type="text" class="form-control" id="firstName" value="Иван">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lastName" class="form-label">Фамилия</label>
+                                                <input type="text" class="form-control" id="lastName" value="Иванов">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" value="doctor@vetcare.ru">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label">Телефон</label>
+                                                <input type="tel" class="form-control" id="phone" value="+7 (123) 456-7890">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="specialty" class="form-label">Специализация</label>
+                                            <input type="text" class="form-control" id="specialty" value="Ветеринар">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="bio" class="form-label">О себе</label>
+                                            <textarea class="form-control" id="bio" rows="3">Ветеринарный врач с опытом работы более 5 лет. Специализация: мелкие домашние животные.</textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Клиника -->
+                <div class="tab-pane fade" id="clinic" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Информация о клинике</h6>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="clinicName" class="form-label">Название клиники</label>
+                                        <input type="text" class="form-control" id="clinicName" value="VetCare">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="clinicPhone" class="form-label">Телефон</label>
+                                        <input type="tel" class="form-control" id="clinicPhone" value="+7 (123) 456-7890">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="clinicAddress" class="form-label">Адрес</label>
+                                    <input type="text" class="form-control" id="clinicAddress" value="г. Москва, ул. Ветеринарная, д. 123">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="workingHoursStart" class="form-label">Время работы (начало)</label>
+                                        <input type="time" class="form-control" id="workingHoursStart" value="09:00">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="workingHoursEnd" class="form-label">Время работы (конец)</label>
+                                        <input type="time" class="form-control" id="workingHoursEnd" value="20:00">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="workingDays" class="form-label">Рабочие дни</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="monday" checked>
+                                            <label class="form-check-label" for="monday">Пн</label>
+                                        </div>
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="tuesday" checked>
+                                            <label class="form-check-label" for="tuesday">Вт</label>
+                                        </div>
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="wednesday" checked>
+                                            <label class="form-check-label" for="wednesday">Ср</label>
+                                        </div>
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="thursday" checked>
+                                            <label class="form-check-label" for="thursday">Чт</label>
+                                        </div>
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="friday" checked>
+                                            <label class="form-check-label" for="friday">Пт</label>
+                                        </div>
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="saturday" checked>
+                                            <label class="form-check-label" for="saturday">Сб</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="sunday">
+                                            <label class="form-check-label" for="sunday">Вс</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Услуги -->
+                <div class="tab-pane fade" id="services" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Управление услугами</h6>
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                                <i class="fas fa-plus me-1"></i> Добавить услугу
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="servicesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Название услуги</th>
+                                            <th>Категория</th>
+                                            <th>Цена (₽)</th>
+                                            <th>Длительность</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Первичный осмотр</td>
+                                            <td>Консультации</td>
+                                            <td>1500</td>
+                                            <td>30 мин</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Вакцинация</td>
+                                            <td>Профилактика</td>
+                                            <td>2200</td>
+                                            <td>20 мин</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>УЗИ</td>
+                                            <td>Диагностика</td>
+                                            <td>3000</td>
+                                            <td>45 мин</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Уведомления -->
+                <div class="tab-pane fade" id="notifications" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Настройки уведомлений</h6>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <h6 class="mb-3">Электронная почта</h6>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="emailAppointments" checked>
+                                    <label class="form-check-label" for="emailAppointments">Уведомления о новых записях</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="emailCancellations" checked>
+                                    <label class="form-check-label" for="emailCancellations">Уведомления об отмене записей</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="emailReminders" checked>
+                                    <label class="form-check-label" for="emailReminders">Ежедневные напоминания о приемах</label>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <h6 class="mb-3">SMS-уведомления</h6>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="smsAppointments">
+                                    <label class="form-check-label" for="smsAppointments">Уведомления о новых записях</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="smsCancellations">
+                                    <label class="form-check-label" for="smsCancellations">Уведомления об отмене записей</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="smsReminders">
+                                    <label class="form-check-label" for="smsReminders">Ежедневные напоминания о приемах</label>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <h6 class="mb-3">Настройки для клиентов</h6>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="clientReminders" checked>
+                                    <label class="form-check-label" for="clientReminders">Отправлять клиентам напоминания о записи</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="clientFeedback" checked>
+                                    <label class="form-check-label" for="clientFeedback">Запрашивать отзыв после приема</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Безопасность -->
+                <div class="tab-pane fade" id="security" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Настройки безопасности</h6>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <h6 class="mb-3">Изменение пароля</h6>
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Текущий пароль</label>
+                                    <input type="password" class="form-control" id="currentPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">Новый пароль</label>
+                                    <input type="password" class="form-control" id="newPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
+                                    <input type="password" class="form-control" id="confirmPassword">
+                                </div>
+                                <button type="button" class="btn btn-primary mb-4">Изменить пароль</button>
+                                
+                                <hr class="my-4">
+                                
+                                <h6 class="mb-3">Двухфакторная аутентификация</h6>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="enable2FA">
+                                    <label class="form-check-label" for="enable2FA">Включить двухфакторную аутентификацию</label>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary mb-4" disabled>Настроить</button>
+                                
+                                <hr class="my-4">
+                                
+                                <h6 class="mb-3">Сеансы</h6>
+                                <p>Активные сеансы: <span class="badge bg-primary">1</span></p>
+                                <button type="button" class="btn btn-warning">Завершить все сеансы</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Внешний вид -->
+                <div class="tab-pane fade" id="appearance" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Настройки интерфейса</h6>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="theme" class="form-label">Тема оформления</label>
+                                    <select class="form-select" id="theme">
+                                        <option value="light" selected>Светлая</option>
+                                        <option value="dark">Темная</option>
+                                        <option value="auto">Системная</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fontSize" class="form-label">Размер шрифта</label>
+                                    <select class="form-select" id="fontSize">
+                                        <option value="small">Маленький</option>
+                                        <option value="medium" selected>Средний</option>
+                                        <option value="large">Большой</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sidebarPosition" class="form-label">Положение боковой панели</label>
+                                    <select class="form-select" id="sidebarPosition">
+                                        <option value="left" selected>Слева</option>
+                                        <option value="right">Справа</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="rememberSidebar" checked>
+                                    <label class="form-check-label" for="rememberSidebar">Запоминать состояние боковой панели</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="animations" checked>
+                                    <label class="form-check-label" for="animations">Включить анимации</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Резервное копирование -->
+                <div class="tab-pane fade" id="backup" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Резервное копирование данных</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6>Последнее резервное копирование</h6>
+                                <p>20.03.2025, 15:30</p>
+                                <div class="d-flex">
+                                    <button class="btn btn-primary me-2">
+                                        <i class="fas fa-download me-1"></i> Скачать
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-history me-1"></i> История
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="mb-4">
+                                <h6>Создать резервную копию</h6>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="backupType" class="form-label">Тип копии</label>
+                                        <select class="form-select" id="backupType">
+                                            <option value="full" selected>Полная</option>
+                                            <option value="patients">Только пациенты</option>
+                                            <option value="appointments">Только приемы</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Создать копию
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div>
+                                <h6>Автоматическое резервное копирование</h6>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="autoBackup" checked>
+                                    <label class="form-check-label" for="autoBackup">Включить автоматическое резервное копирование</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="backupFrequency" class="form-label">Частота</label>
+                                    <select class="form-select" id="backupFrequency">
+                                        <option value="daily">Ежедневно</option>
+                                        <option value="weekly" selected>Еженедельно</option>
+                                        <option value="monthly">Ежемесячно</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="backupTime" class="form-label">Время</label>
+                                    <input type="time" class="form-control" id="backupTime" value="03:00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно добавления услуги -->
+<div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addServiceModalLabel">Добавление услуги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="serviceForm">
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">Название услуги</label>
+                        <input type="text" class="form-control" id="serviceName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceCategory" class="form-label">Категория</label>
+                        <select class="form-select" id="serviceCategory" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="consultation">Консультации</option>
+                            <option value="diagnostics">Диагностика</option>
+                            <option value="prevention">Профилактика</option>
+                            <option value="surgery">Хирургия</option>
+                            <option value="grooming">Груминг</option>
+                            <option value="laboratory">Лабораторные</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicePrice" class="form-label">Цена (₽)</label>
+                        <input type="number" class="form-control" id="servicePrice" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDuration" class="form-label">Длительность (мин)</label>
+                        <input type="number" class="form-control" id="serviceDuration" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDescription" class="form-label">Описание</label>
+                        <textarea class="form-control" id="serviceDescription" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="saveService">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Сохранение настроек
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        saveSettingsBtn.addEventListener('click', function() {
+            // Здесь будет логика сохранения настроек
+            console.log('Настройки сохранены');
+            
+            // Показать уведомление об успешном сохранении
+            alert('Настройки успешно сохранены!');
+        });
+        
+        // Обработчик сохранения услуги
+        const saveServiceBtn = document.getElementById('saveService');
+        saveServiceBtn.addEventListener('click', function() {
+            // Здесь будет логика сохранения услуги
+            console.log('Услуга сохранена');
+            
+            // Закрыть модальное окно
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addServiceModal'));
+            modal.hide();
+            
+            // Показать уведомление об успешном сохранении
+            alert('Услуга успешно добавлена!');
+        });
+    });
+</script>
+{% endblock %}

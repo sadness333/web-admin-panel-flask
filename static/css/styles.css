@@ -8,14 +8,24 @@
     --dark-color: #5a5c69;
     --light-color: #f8f9fc;
     --sidebar-width: 250px;
+    --sidebar-collapsed-width: 70px;
     --topbar-height: 70px;
     --border-color: #e3e6f0;
+    --transition-speed: 0.3s;
 }
 
 body {
     font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background-color: #f8f9fc;
     color: #5a5c69;
+    overflow-x: hidden;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
 }
 
 /* Боковая панель */
@@ -27,29 +37,78 @@ body {
     left: 0;
     bottom: 0;
     z-index: 100;
-    transition: all 0.3s;
-    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.sidebar-brand {
-    height: var(--topbar-height);
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-header {
+    padding: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 1.5rem 1rem;
-    color: white;
+    justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-brand-text {
+.sidebar-header h3 {
+    margin: 0;
     font-size: 1.2rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
-.sidebar-brand-icon {
+.sidebar-header h3 i {
     margin-right: 0.5rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.sidebar.collapsed .sidebar-header h3 span {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-header h3 i {
+    margin-right: 0;
+    font-size: 1.5rem;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.sidebar-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-toggle i {
+    font-size: 0.875rem;
+    transition: transform var(--transition-speed);
+}
+
+.sidebar.collapsed .sidebar-toggle i {
+    transform: rotate(180deg);
 }
 
 .sidebar-divider {
@@ -61,12 +120,16 @@ body {
     position: relative;
 }
 
+.nav-item.settings-item {
+    margin-top: 0 !important;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
     color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s;
+    transition: all var(--transition-speed);
 }
 
 .nav-link:hover {
@@ -84,15 +147,90 @@ body {
     margin-right: 0.5rem;
     width: 1.5rem;
     text-align: center;
+    font-size: 1rem;
+}
+
+.sidebar.collapsed .nav-link i {
+    margin-right: 0;
+}
+
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-header h3 span {
+    display: none;
+}
+
+/* Блок с информацией о пользователе */
+.user-info-block {
+    margin-top: auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-speed) ease;
+}
+
+.user-info-block img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    object-fit: cover;
+}
+
+.user-info {
+    overflow: hidden;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.user-name, .user-role {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-name {
+    font-weight: 600;
+    color: white;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar.collapsed .user-info {
+    opacity: 0;
+    width: 0;
+}
+
+.sidebar.collapsed .user-info-block {
+    justify-content: center;
+    padding: 1rem 0.5rem;
+}
+
+.sidebar.collapsed .user-info-block img {
+    margin-right: 0;
 }
 
 /* Основной контент */
-.content {
+.main-content {
+    width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
     padding: 1.5rem;
     min-height: 100vh;
+    transition: all var(--transition-speed) ease;
 }
 
+.main-content.expanded {
+    width: calc(100% - var(--sidebar-collapsed-width));
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Топбар */
 .topbar {
     height: var(--topbar-height);
     background-color: white;
@@ -166,44 +304,61 @@ body {
 
 /* Статистика */
 .stat-card {
-    border-left: 4px solid;
-    transition: transform 0.3s;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
+.stat-card.stat-appointments {
+    border-left: 4px solid var(--primary-color);
 }
 
-.stat-card.primary {
-    border-left-color: var(--primary-color);
+.stat-card.stat-patients {
+    border-left: 4px solid var(--secondary-color);
 }
 
-.stat-card.success {
-    border-left-color: var(--secondary-color);
+.stat-card.stat-messages {
+    border-left: 4px solid var(--info-color);
 }
 
-.stat-card.warning {
-    border-left-color: var(--warning-color);
+.stat-card .stat-content {
+    display: flex;
+    align-items: center;
+    padding-left: 0.75rem;
 }
 
-.stat-card.danger {
-    border-left-color: var(--danger-color);
-}
-
-.stat-card .stat-icon {
-    font-size: 2rem;
-    opacity: 0.3;
+.stat-card .stat-text {
+    flex: 1;
 }
 
 .stat-card .stat-value {
     font-size: 1.5rem;
     font-weight: 700;
+    color: #5a5c69;
+    margin-bottom: 0.25rem;
 }
 
 .stat-card .stat-label {
     font-size: 0.875rem;
     color: #858796;
     text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.stat-card .stat-divider {
+    width: 1px;
+    height: 40px;
+    background-color: #e3e6f0;
+    margin: 0 1.5rem;
+}
+
+.stat-card .stat-icon {
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.1);
 }
 
 /* Таблицы */
@@ -233,7 +388,7 @@ body {
 
 /* Карточки пациентов */
 .patient-card {
-    transition: transform 0.3s;
+    transition: transform var(--transition-speed);
     cursor: pointer;
 }
 
@@ -333,7 +488,7 @@ body {
     padding: 1rem;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color var(--transition-speed);
 }
 
 .chat-contact:hover {
@@ -412,21 +567,49 @@ body {
 /* Адаптивность */
 @media (max-width: 768px) {
     .sidebar {
-        width: 0;
+        width: var(--sidebar-width);
         transform: translateX(-100%);
     }
     
     .sidebar.show {
-        width: var(--sidebar-width);
         transform: translateX(0);
     }
     
-    .content {
+    .sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.collapsed.show {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        width: 100%;
         margin-left: 0;
     }
     
-    .topbar {
-        padding: 0 1rem;
+    .main-content.expanded {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .mobile-toggle {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 101;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
     }
     
     .user-profile img {

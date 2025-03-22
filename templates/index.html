@@ -8,29 +8,38 @@
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="stat-card stat-appointments">
-                <div>
-                    <div class="stat-value">8</div>
-                    <div class="stat-label">Приемов сегодня</div>
+                <div class="stat-content">
+                    <div class="stat-text">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Приемов сегодня</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <i class="fas fa-calendar-check stat-icon"></i>
                 </div>
-                <i class="fas fa-calendar-check stat-icon"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card stat-patients">
-                <div>
-                    <div class="stat-value">42</div>
-                    <div class="stat-label">Всего пациентов</div>
+                <div class="stat-content">
+                    <div class="stat-text">
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">Всего пациентов</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <i class="fas fa-paw stat-icon"></i>
                 </div>
-                <i class="fas fa-paw stat-icon"></i>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card stat-messages">
-                <div>
-                    <div class="stat-value">5</div>
-                    <div class="stat-label">Новых сообщений</div>
+                <div class="stat-content">
+                    <div class="stat-text">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Новых сообщений</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <i class="fas fa-comments stat-icon"></i>
                 </div>
-                <i class="fas fa-comments stat-icon"></i>
             </div>
         </div>
     </div>
@@ -193,14 +202,17 @@
                         </li>
                         <li class="list-group-item d-flex align-items-center py-3">
                             <div class="activity-icon bg-info text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                <i class="fas fa-comments"></i>
+                                <i class="fas fa-user-plus"></i>
                             </div>
                             <div>
-                                <div>Новое сообщение от <strong>Анна Сидорова</strong></div>
-                                <small class="text-muted">Сегодня, 10:20</small>
+                                <div>Новый пациент <strong>Пушок</strong></div>
+                                <small class="text-muted">Вчера, 16:40</small>
                             </div>
                         </li>
                     </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="text-decoration-none">Показать всю активность</a>
                 </div>
             </div>
         </div>
@@ -210,10 +222,8 @@
 
 {% block scripts %}
 <script>
-    // Здесь будет дополнительный JavaScript для графиков и интерактивности
     document.addEventListener('DOMContentLoaded', function() {
-        // Инициализация компонентов
-        console.log('Dashboard initialized');
+        // Здесь будет инициализация графиков и других интерактивных элементов
     });
 </script>
 {% endblock %}
