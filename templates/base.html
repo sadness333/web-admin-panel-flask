@@ -17,47 +17,69 @@
     
     <div class="wrapper">
         <!-- Левое меню -->
-        <nav class="sidebar">
+        <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h3><i class="fas fa-stethoscope"></i> VetCare</h3>
+                <div class="logo">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>VetCare</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
             </div>
-            <ul class="nav flex-column mt-3">
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if request.path == '/' else '' }}" href="/" title="Главная">
-                        <i class="fas fa-home"></i> <span>Главная</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if request.path == '/appointments' else '' }}" href="/appointments" title="Приемы">
-                        <i class="fas fa-calendar-check"></i> <span>Приемы</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if request.path == '/patients' else '' }}" href="/patients" title="Пациенты">
-                        <i class="fas fa-paw"></i> <span>Пациенты</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if request.path == '/search' else '' }}" href="/search" title="Поиск">
-                        <i class="fas fa-search"></i> <span>Поиск</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ 'active' if request.path == '/chat' else '' }}" href="/chat" title="Чат">
-                        <i class="fas fa-comments"></i> <span>Чат</span>
-                    </a>
-                </li>
-                <li class="nav-item settings-item">
-                    <a class="nav-link {{ 'active' if request.path == '/settings' else '' }}" href="/settings" title="Настройки">
-                        <i class="fas fa-cog"></i> <span>Настройки</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="mt-auto p-3 d-flex align-items-center">
-                <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Доктор">
-                <div>
-                    <div class="text-white">Доктор Иванов</div>
-                    <small class="text-muted">Ветеринар</small>
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="/" class="{{ 'active' if request.path == '/' else '' }}" title="Главная">
+                            <i class="fas fa-home"></i>
+                            <span>Главная</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/appointments" class="{{ 'active' if request.path == '/appointments' else '' }}" title="Приемы">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Приемы</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/patients" class="{{ 'active' if request.path == '/patients' else '' }}" title="Пациенты">
+                            <i class="fas fa-paw"></i>
+                            <span>Пациенты</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/search" class="{{ 'active' if request.path == '/search' else '' }}" title="Поиск">
+                            <i class="fas fa-search"></i>
+                            <span>Поиск</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/chat" class="{{ 'active' if request.path == '/chat' else '' }}" title="Чат">
+                            <i class="fas fa-comments"></i>
+                            <span>Чат</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/settings" class="{{ 'active' if request.path == '/settings' else '' }}" title="Настройки">
+                            <i class="fas fa-cog"></i>
+                            <span>Настройки</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        {% if session.get('user_role') == 'Администратор' %}
+                            <i class="fas fa-user-shield"></i>
+                        {% else %}
+                            <i class="fas fa-user-md"></i>
+                        {% endif %}
+                    </div>
+                    <div class="user-details">
+                        <h6>{{ session.get('user_name', 'Доктор Иванов') }}</h6>
+                        <p>{{ session.get('user_role', 'Ветеринар') }}</p>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -75,14 +97,20 @@
                     </div>
                     <div class="dropdown">
                         <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://via.placeholder.com/32" class="rounded-circle me-1" alt="Доктор">
-                            <span class="d-none d-md-inline">Доктор Иванов</span>
+                            <div class="user-avatar d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                {% if session.get('user_role') == 'Администратор' %}
+                                    <i class="fas fa-user-shield"></i>
+                                {% else %}
+                                    <i class="fas fa-user-md"></i>
+                                {% endif %}
+                            </div>
+                            <span class="d-none d-md-inline">{{ session.get('user_name', 'Доктор Иванов') }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Профиль</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Настройки</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Выход</a></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Выход</a></li>
                         </ul>
                     </div>
                 </div>
